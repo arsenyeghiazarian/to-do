@@ -153,12 +153,15 @@ function getDeletedList() {
     }
 } 
 
-
-// detect input change on keyboard key press 
+// submit form value on keyboard enter
 document.getElementById('new-task').addEventListener('keyup', (event) => {
     if(event.keyCode === 13 && event.target.value.length !== 0) {
         submit()
     }
+})
+
+// detect input change
+document.getElementById('new-task').addEventListener('input', (event) => {
     if (event.target.value.length !== 0) {
         document.getElementById('submit').removeAttribute('disabled')
     } else {
