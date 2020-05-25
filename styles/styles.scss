@@ -1,0 +1,133 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.title {
+    text-align: center;
+    font-size: 35px;
+    margin: 40px 0 30px;
+}
+
+section {
+    height: 100vh;
+}
+
+.btn.submit-btn {
+    height: 38px;
+    padding: 0 15px;
+    border: 1px solid #efefef;
+    margin-left: 20px;
+}
+
+.form-control {
+    border-color: #efefef;
+}
+
+.content {
+    border: 1px solid #efefef;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #fff;
+    -webkit-box-shadow: 0px 0px 29px -15px rgba(0,0,0,0.30);
+    -moz-box-shadow: 0px 0px 29px -15px rgba(0,0,0,0.30);
+    box-shadow: 0px 0px 29px -15px rgba(0,0,0,0.30);
+
+    .nav.nav-tabs {
+        max-width: 300px;
+        margin: 0 auto;
+        border: none;
+        .nav-item .nav-link {
+            border: 1px solid #efefef;
+            color: #000;
+            padding: 10px 15px;
+            font-size: 14px;
+            transition: all 0.6s;
+            border-radius: 5px;
+        }
+        .nav-item .nav-link.active {
+            background-color: #efefef;
+            
+        }
+        .nav-item .nav-link:hover {
+            background-color: #efefef;
+        }
+    }
+
+    .tab-content {
+        height: 472px;
+    }
+}
+
+.list-box {
+    background-color: #fff;
+    border: 1px solid #efefef;
+    border-radius: 5px;
+    max-width: 600px;
+    margin: 30px auto 0;
+    .list {
+        min-height: 400px;
+        h4 {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .inner-wrapper {
+            height: 400px;
+            overflow-y: auto;
+        }
+        .list-row {
+            margin-bottom: 10px;
+            margin: 0;
+            p {
+                font-size: 13px;
+                margin-bottom: 0;
+                flex-grow: 1;
+                line-height: 30px;
+                border-bottom: 1px solid #efefef;
+                padding: 10px 125px 10px 15px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            p:focus {
+                outline: none;
+            }
+            .btn-wrapper {
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                opacity: 0;
+                transition: opacity 0.5s;
+                .edit {
+                    background: transparent;
+                    border-radius: 50%;
+                    vertical-align: middle;
+                    outline: none;
+                    padding: 0;
+                    height: 30px;
+                    width: 30px;
+                    text-align: center;
+                }
+                .edit.hide {
+                    opacity: 0;
+                } 
+            }
+        }
+        .list-row:last-child {
+            margin-bottom: 0;
+        }
+        .list-row:hover .btn-wrapper {
+            opacity: 1;
+        }
+        .list-row.active #edit-btn {
+            background-color: #28a745;
+        }
+        .list-row.active .btn-wrapper {
+            opacity: 1;
+        }
+    }
+}

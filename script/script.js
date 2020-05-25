@@ -15,7 +15,7 @@ function toggleEdit(id) {
     if (el.firstElementChild.getAttribute('contenteditable') === 'false') {
         el.firstElementChild.setAttribute('contenteditable', 'true')
         el.classList.add('active')
-        el.firstElementChild.focus();
+        el.firstElementChild.focus ();
     } else {
         el.firstElementChild.setAttribute('contenteditable', 'false')
         el.classList.remove('active')
