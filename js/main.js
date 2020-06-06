@@ -4,10 +4,16 @@ let data = {
     deletedList: [],
     doneList: [],
 };  
+let inputContainer = document.getElementById('search-input-container');
+let selectedList = 'currentList'
 
 getCurrentList();
 getDoneList();
 getDeletedList();
+
+$(document).ready(function() {
+    // $("#new-task").emojioneArea();
+});
 
 // change edit button state
 function toggleEdit(id) {
@@ -25,6 +31,39 @@ function toggleEdit(id) {
                 break;
             }
         }
+    }
+}
+
+// open search input on btn click 
+document.getElementById('searchBtn').addEventListener('click', () => {
+    inputContainer.classList.toggle('open');
+    setTimeout(() => {
+        inputContainer.querySelector('input').focus()
+    }, 700)
+})
+
+// detect search input change
+inputContainer.querySelector('input').addEventListener('input', (event) => {
+    let filteredList =  data[selectedList].filter( el => el.title.includes(event.target.value))
+    if(selectedList === 'currentList') {
+        getCurrentList(filteredList)
+    }
+    if(selectedList === 'doneList') {
+        getDoneList(filteredList)
+    }
+    if(selectedList === 'deletedList') {
+        getDeletedList(filteredList)
+    }
+})
+
+// side bar toggle
+function toggleMenu(state = null) {
+    document.getElementById('nav-icon').classList.toggle('open')
+    document.getElementById('menu-wrapper').classList.toggle('open')
+    document.getElementById('list-box-wrapper').classList.toggle('menu-open')
+    if(state) {
+        inputContainer.querySelector('input').value = '';
+        selectedList = state
     }
 }
 
@@ -72,14 +111,14 @@ function action(id, state) {
     getDeletedList()
 }
 
-function getCurrentList() {
-    let list = document.getElementById('list-wrapper');
+function getCurrentList(list = data['currentList']) {
+    let listWrapper = document.getElementById('list-wrapper');
     let value = '';
-    if (!data.currentList.length) {
-        list.innerHTML = '<h4>There Is Nothing To Do</h4>'
+    if (!list.length) {
+        listWrapper.innerHTML = '<h4>There Is Nothing To Do</h4>'
     } else {
-        list.removeChild(list.childNodes[0])
-        data.currentList.sort((a, b) => a.id - b.id).forEach((el) => {
+        listWrapper.removeChild(listWrapper.childNodes[0])
+        list.sort((a, b) => a.id - b.id).forEach((el) => {
         value += `
                 <li class="d-flex align-items-center list-row position-relative" id="${el.id}">
                     <p id="task" contenteditable="false">${el.title}</p>
@@ -105,18 +144,18 @@ function getCurrentList() {
                 </li>
                 `
         })
-        list.innerHTML = value;
+        listWrapper.innerHTML = value;
     }
 }
 
-function getDoneList() {
-    let list = document.getElementById('done-list');
+function getDoneList(list = data['doneList']) {
+    let listWrapper = document.getElementById('done-list');
     let value = '';
-    if (!data.doneList.length) {
-        list.innerHTML = '<h4>There Is Nothing Done Yet</h4>'
+    if (!list.length) {
+        listWrapper.innerHTML = '<h4>There Is Nothing Done Yet</h4>'
     } else {
-        list.removeChild(list.childNodes[0])
-        data.doneList.forEach((el) => {
+        listWrapper.removeChild(listWrapper.childNodes[0])
+        list.forEach((el) => {
         value += `
                 <li class="d-flex align-items-center list-row position-relative" id="${el.id}">
                     <p id="task" contenteditable="false">${el.title}</p>
@@ -131,25 +170,25 @@ function getDoneList() {
                 </li>
                 `
         })
-        list.innerHTML = value;
+        listWrapper.innerHTML = value;
     }
 }
 
-function getDeletedList() {
-    let list = document.getElementById('delete-list');
+function getDeletedList(list = data['deletedList']) {
+    let listWrapper = document.getElementById('delete-list');
     let value = '';
-    if (!data.deletedList.length) {
-        list.innerHTML = '<h4>There Is Nothing Deleted</h4>'
+    if (!list.length) {
+        listWrapper.innerHTML = '<h4>There Is Nothing Deleted</h4>'
     } else {
-        list.removeChild(list.childNodes[0])
-        data.deletedList.forEach((el) => {
+        listWrapper.removeChild(listWrapper.childNodes[0])
+        list.forEach((el) => {
         value += `
                 <li class="d-flex align-items-center list-row position-relative" id="${el.id}">
                     <p id="task" contenteditable="false">${el.title}</p>
                 </li>
                 `
         })
-        list.innerHTML = value;
+        listWrapper.innerHTML = value;
     }
 } 
 
@@ -160,7 +199,7 @@ document.getElementById('new-task').addEventListener('keyup', (event) => {
     }
 })
 
-// detect input change
+// detect new task input change
 document.getElementById('new-task').addEventListener('input', (event) => {
     if (event.target.value.length !== 0) {
         document.getElementById('submit').removeAttribute('disabled')
