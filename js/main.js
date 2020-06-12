@@ -5,14 +5,33 @@ let data = {
     doneList: [],
 };  
 let inputContainer = document.getElementById('search-input-container');
-let selectedList = 'currentList'
+let selectedList = 'currentList';
+var _draggableEl;
 
 getCurrentList();
 getDoneList();
 getDeletedList();
 
 $(document).ready(function() {
-    // $("#new-task").emojioneArea();
+    $("#new-task").emojioneArea({
+        events: {
+            keyup: function (editor, event) {
+                setTimeout(() => {
+                    // detect new task input change
+                    if (editor[0].innerHTML.length !== 0) {
+                        document.getElementById('submit').removeAttribute('disabled')
+                    } else {
+                        document.getElementById('submit').setAttribute('disabled', '')
+                    }
+
+                    // submit form value on keyboard enter
+                    if(event.keyCode === 13 && event.target.innerHTML.length !== 0) {
+                        submit()
+                    }
+                }, 0)
+            }
+        }
+    });
 });
 
 // change edit button state
@@ -32,6 +51,26 @@ function toggleEdit(id) {
             }
         }
     }
+}
+
+// list drag & drop functionality
+function dragOver(e) {
+    if (isBefore(_draggableEl, e.currentTarget)) e.currentTarget.parentNode.insertBefore(_draggableEl, e.currentTarget);
+    else e.currentTarget.parentNode.insertBefore(_draggableEl, e.currentTarget.nextElementSibling);
+}
+
+function dragStart(e) {
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", null); 
+    _draggableEl = e.target;
+}
+
+function isBefore(el1, el2) {
+    if (el2.parentNode === el1.parentNode)
+        for (var cur = el1.previousElementSibling; cur && cur.nodeType !== 9; cur = cur.previousElementSibling)
+            if (cur === el2)
+            return true;
+        return false;
 }
 
 // open search input on btn click 
@@ -69,7 +108,7 @@ function toggleMenu(state = null) {
 
 // submit input form 
 function submit() {
-    const inputValue = document.getElementById('new-task').value;
+    let inputValue = $("#new-task").data("emojioneArea").getText()
     const obj = {
         title: inputValue,
         id: id++
@@ -77,7 +116,7 @@ function submit() {
     data.currentList.push(obj);
     getCurrentList();
     document.getElementById('submit').setAttribute('disabled', '');
-    document.getElementById('new-task').value = '';
+    $("#new-task").data("emojioneArea").setText('')
 }
 
 // delete, undo and done buttons functionality
@@ -117,10 +156,10 @@ function getCurrentList(list = data['currentList']) {
     if (!list.length) {
         listWrapper.innerHTML = '<h4>There Is Nothing To Do</h4>'
     } else {
-        listWrapper.removeChild(listWrapper.childNodes[0])
+        listWrapper.removeChild(listWrapper.childNodes[0]);
         list.sort((a, b) => a.id - b.id).forEach((el) => {
         value += `
-                <li class="d-flex align-items-center list-row position-relative" id="${el.id}">
+                <li class="d-flex align-items-center list-row position-relative" id="${el.id}" draggable="true" ondragstart="dragStart(event)" ondragover="dragOver(event)">
                     <p id="task" contenteditable="false">${el.title}</p>
                     <div class="btn-wrapper d-flex align-items-center">
                         <button id="edit-btn" class="edit d-flex align-items-center justify-content-center" onclick="toggleEdit(${el.id})">
@@ -191,19 +230,3 @@ function getDeletedList(list = data['deletedList']) {
         listWrapper.innerHTML = value;
     }
 } 
-
-// submit form value on keyboard enter
-document.getElementById('new-task').addEventListener('keyup', (event) => {
-    if(event.keyCode === 13 && event.target.value.length !== 0) {
-        submit()
-    }
-})
-
-// detect new task input change
-document.getElementById('new-task').addEventListener('input', (event) => {
-    if (event.target.value.length !== 0) {
-        document.getElementById('submit').removeAttribute('disabled')
-    } else {
-        document.getElementById('submit').setAttribute('disabled', '')
-    }
-})

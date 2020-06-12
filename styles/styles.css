@@ -9,24 +9,37 @@ ul {
 
 section {
   height: calc(100vh - 40px);
-  background-color: #477754;
+  background-color: #4eaf68;
 }
 
 .btn.submit-btn {
-  height: 38px;
+  height: 34px;
   padding: 0 15px;
-  border: 1px solid #efefef;
+  border: none;
   margin-left: 20px;
+  font-size: 15px;
   background-color: #fff;
 }
 
+.emojionearea.form-control,
 .form-control {
   transition: all 0.5s;
   border: none;
 }
 
 .form-control:focus {
+  box-shadow: none;
+}
+
+.emojionearea.form-control.focused {
   box-shadow: 0px 0px 10px rgba(130, 130, 130, 0.2);
+}
+
+.list-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 15px 20px;
 }
 
 .header {
@@ -34,7 +47,7 @@ section {
   position: sticky;
   top: 0;
   z-index: 10;
-  background-color: #a92423;
+  background-color: #ce2b2a;
 }
 .header .title {
   text-align: center;
@@ -227,11 +240,12 @@ section {
 }
 .list-box .list h4 {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 130px;
+  font-size: 20px;
 }
 .list-box .list .inner-wrapper {
   height: 400px;
-  padding: 15px 10px;
+  padding: 0 10px;
   overflow-y: auto;
 }
 .list-box .list .list-row {
@@ -286,6 +300,10 @@ section {
 }
 .list-box .list .list-row.active .btn-wrapper {
   opacity: 1;
+}
+
+#current .list-row {
+  cursor: move;
 }
 
 /*# sourceMappingURL=styles.css.map */
